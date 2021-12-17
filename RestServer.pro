@@ -11,6 +11,7 @@ SOURCES += \
         Request.cpp \
         Response.cpp \
         jardinsensores.cpp \
+        jsonobject.cpp \
         lista.cpp \
         main.cpp \
         path.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     Request.h \
     Response.h \
     jardinsensores.h \
+    jsonobject.h \
     lista.h \
     path.h \
     requestbody.h \

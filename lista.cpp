@@ -46,9 +46,10 @@ bool updateL(nodeL*& node,const char* key,const char* newdato){
 }
 
 void showListL(nodeL*& node){
+    nodeL *aux = node;
     if(node != nullptr){
-        printf("%s\n",node->dato);
-        showListL(node->sig);
+        printf("key: %s , value: %s\n",aux->key,aux->dato);
+        showListL(aux->sig);
     }
 }
 
@@ -63,15 +64,21 @@ void freeList(nodeL *& node){
 }
 
 char* getValueByKey(const char* key,nodeL *& data){
-    static char * value;
+    static char * value = nullptr;
     nodeL *aux  = data;
     while(aux != nullptr){
-        if(strcmp(key,data->key) == 0){
-            value = static_cast<char*>(malloc((strlen(data->dato)+1)*sizeof(char)));
-            memcpy(value, data->dato, strlen(data->dato)+1);
+        if(strcmp(key,aux->key) == 0){
+            value = static_cast<char*>(malloc((strlen(aux->dato)+1)*sizeof(char)));
+            memcpy(value, aux->dato, strlen(aux->dato)+1);
+            break;
+        }
+        if(aux->sig == nullptr){
+            value = static_cast<char*>(malloc(6*sizeof(char)));
+            memcpy(value, "error",6);
             break;
         }
         aux = aux->sig;
     }
+
     return value;
 }
