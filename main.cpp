@@ -4,6 +4,9 @@
 #include "Response.h"
 #include "jardinsensores.h"
 #include <chrono>
+#include <jsonobject.h>
+
+
 #define EXAMPLE_REQUEST_HOME "GET / HTTP/1.1\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)mm\nHost: www.tutorialspoint.com\nAccept-Language: en-us\nAccept-Encoding: gzip, deflate\nConnection: Keep-Alive\n\\n"
 #define EXAMPLE_REQUEST_TEMPO "POST /tempo HTTP/1.1\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)mm\nHost: www.tutorialspoint.com\nAccept-Language: en-us\nAccept-Encoding: gzip, deflate\nConnection: Keep-Alive\n\n{'conf':'tempo','status':'on','time':'min','ciclo':'1451'}\n"
 #define EXAMPLE_REQUEST_LAMP "POST /lamp HTTP/1.1\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)mm\nHost: www.tutorialspoint.com\nAccept-Language: en-us\nAccept-Encoding: gzip, deflate\nConnection: Keep-Alive\n\n{'conf':'lamp','l1':'on'}\n"
@@ -11,7 +14,7 @@
 using namespace Insoel;
 using namespace std::chrono;
 
-template<typename T>
+/*template<typename T>
 void temperatura(Request * req,Response *res, T* m){
     req->print_str_request();
     cout << req->getValByKey("conf") << endl;
@@ -35,12 +38,12 @@ void home(Request *req  ,Response *res, T *m){
     res->add_to_response("temperatura",res->convert(m->temperatura));
     res->add_to_response("humedad",res->convert(m->humedad));
     cout << "se ejecuto home" << endl;
-}
+}*/
 
 /** limpiar respuesta para que funcione */
 
 int main(){
-    JardinSensores *js = new JardinSensores();
+    /*JardinSensores *js = new JardinSensores();
     auto start = high_resolution_clock::now();
     Rest<JardinSensores> rest(js);
     rest.add_endpoint("GET","/",home);
@@ -54,6 +57,34 @@ int main(){
     auto duration = duration_cast<microseconds>(stop - start);
     cout << "Time taken by function: "
              << duration.count() << " microseconds" << endl;
-    delete(js);
+    delete(js);*/
+    cout << "=========== Parseando cadena ==================================="<<endl;
+    jsonObject *test = new jsonObject("{'conf':'tempo','status':'on','time':'min','ciclo':'1451'}");
+    test->print();
+    cout << endl;
+
+    cout << "=========== Obteniendo tamano =================================="<<endl;
+    cout << test->get_length() << endl;
+    cout << endl;
+
+    cout << "=========== Probando si la key existe =========================="<<endl;
+    cout << test->key_exist("conf") << "  "<<test->key_exist("cicle") << endl;
+    cout << endl;
+
+    cout << "=========== Obteniendo valor por medio de la key ================"<<endl;
+    cout << test->get_ValueByKey("conf") << " ----- " << test->get_ValueByKey("ciclo") << endl;
+    cout << endl;
+
+    cout << "=========== Agregando al Json ==================================="<<endl;
+    test->add_to_json("status server","200");
+    test->print();
+    cout << endl;
+
+    cout << "=========== Parseando Objecto ==================================="<<endl;
+    cout << test->json_to_str() << endl;
+    cout << endl;
+    cout << "Pruba Finalizada" << endl;
+
+    delete(test);
     return 0;
 }
