@@ -4,6 +4,7 @@
 #include <vector>
 #include "stdlib.h"
 #include "path.h"
+#include "jsonobject.h"
 
 using namespace std;
 namespace Insoel {
@@ -41,45 +42,43 @@ namespace Insoel {
         bool bandera = false;
         size_t nPaths = this->numPaths;
         Request *req = nullptr;
-        RequestBody reqbody;
         try {
-            req = new Request(strRequest);
-            reqbody.cant = 0;
-            reqbody.data = nullptr;
-        }  catch (const char * error) {
-            cout << error << endl;
+           req = new Request(strRequest.c_str());
+        }  catch (const char * err) {
+            cout << err << endl;
         }
 
         Response *res = new Response();
-        ResponseBody resbody;
-        resbody.cant = 0;
-        resbody.data = nullptr;
-        res->body = &resbody;
-
 
         for(size_t i=0;i<nPaths;i++){
             if(strcmp((this->paths[i].path).c_str(),req->path.c_str()) == 0){
                 if(strcmp(req->method.c_str(),"GET") == 0){
                     (this->paths[i].callback)(req,res,m);
                 }else{
-                    getBodyFromStr(req->strbody.c_str(),&reqbody);
-                    req->body = reqbody;
-                    (this->paths[i].callback)(req,res,m);
+                    try {
+                        jsonObject *body = new jsonObject(req->strbody.c_str());
+                        req->body = body;
+                        (this->paths[i].callback)(req,res,m);
+                    }  catch (const char * err) {
+                        cout << err << endl;
+                    }
                 }
                 bandera = true;
                 break;
             }
         }
-
-        if(!bandera){
+        if(!bandera)
             cout << "Punto final desconocido" << endl;
+        try {
+            cout << res->create_response() << endl;
+        }  catch (const char * err) {
+            cout << err << endl;
         }
-        res->create_response("200");
-        cout << res->strResponse << endl;
-        freeList(req->body.data);
-        freeList(res->body->data);
+
+        delete(req);
+        delete(res);
         cout <<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
-        delete req;
+
     }
 }
 

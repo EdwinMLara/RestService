@@ -1,10 +1,7 @@
 #include "iostream"
 #include "rest.h"
-#include "Request.h"
-#include "Response.h"
 #include "jardinsensores.h"
 #include <chrono>
-#include <jsonobject.h>
 
 
 #define EXAMPLE_REQUEST_HOME "GET / HTTP/1.1\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)mm\nHost: www.tutorialspoint.com\nAccept-Language: en-us\nAccept-Encoding: gzip, deflate\nConnection: Keep-Alive\n\\n"
@@ -14,14 +11,19 @@
 using namespace Insoel;
 using namespace std::chrono;
 
-/*template<typename T>
+template<typename T>
 void temperatura(Request * req,Response *res, T* m){
     req->print_str_request();
-    cout << req->getValByKey("conf") << endl;
     res->add_to_response("prueba","temp");
     res->add_to_response("temperatura","0.254");
     cout << "Se ejecuto temperatura" << endl;
     cout << m->temperatura << endl;
+    float aux = 4;
+    cout << jsonObject::convert(aux) << endl;
+    bool aux2 = 0;
+    cout << jsonObject::convert(aux2) << endl;
+    size_t aux3 = 5654;
+    cout << jsonObject::convert(aux3) << endl;
 }
 
 template<typename T>
@@ -29,21 +31,22 @@ void humedad(Request *req,Response *res, T* m){
     req->print_str_request();
     res->add_to_response("prueba","hum");
     res->add_to_response("humedad","18.9");
+    res->add_to_response("otro","18123.052");
     cout << "se ejecuto humedad" << endl;
     cout << m->humedad << endl;
 }
 
 template <typename T>
 void home(Request *req  ,Response *res, T *m){
-    res->add_to_response("temperatura",res->convert(m->temperatura));
-    res->add_to_response("humedad",res->convert(m->humedad));
+    res->add_to_response("temperatura",jsonObject::convert(m->temperatura));
+    res->add_to_response("humedad",jsonObject::convert(m->humedad));
     cout << "se ejecuto home" << endl;
-}*/
+}
 
 /** limpiar respuesta para que funcione */
 
 int main(){
-    /*JardinSensores *js = new JardinSensores();
+    JardinSensores *js = new JardinSensores();
     auto start = high_resolution_clock::now();
     Rest<JardinSensores> rest(js);
     rest.add_endpoint("GET","/",home);
@@ -57,34 +60,7 @@ int main(){
     auto duration = duration_cast<microseconds>(stop - start);
     cout << "Time taken by function: "
              << duration.count() << " microseconds" << endl;
-    delete(js);*/
-    cout << "=========== Parseando cadena ==================================="<<endl;
-    jsonObject *test = new jsonObject("{'conf':'tempo','status':'on','time':'min','ciclo':'1451'}");
-    test->print();
-    cout << endl;
+    delete(js);
 
-    cout << "=========== Obteniendo tamano =================================="<<endl;
-    cout << test->get_length() << endl;
-    cout << endl;
-
-    cout << "=========== Probando si la key existe =========================="<<endl;
-    cout << test->key_exist("conf") << "  "<<test->key_exist("cicle") << endl;
-    cout << endl;
-
-    cout << "=========== Obteniendo valor por medio de la key ================"<<endl;
-    cout << test->get_ValueByKey("conf") << " ----- " << test->get_ValueByKey("ciclo") << endl;
-    cout << endl;
-
-    cout << "=========== Agregando al Json ==================================="<<endl;
-    test->add_to_json("status server","200");
-    test->print();
-    cout << endl;
-
-    cout << "=========== Parseando Objecto ==================================="<<endl;
-    cout << test->json_to_str() << endl;
-    cout << endl;
-    cout << "Pruba Finalizada" << endl;
-
-    delete(test);
     return 0;
 }

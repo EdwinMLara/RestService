@@ -1,6 +1,12 @@
 #include "jsonobject.h"
 
 namespace Insoel {
+    jsonObject::jsonObject(){
+        this->length = 0;
+        this->strBody = "";
+        this->data = nullptr;
+    }
+
     jsonObject::jsonObject(const char * strbody){
         this->strBody = strbody;
 
@@ -89,9 +95,36 @@ namespace Insoel {
         return buffer;
     }
 
-    const char* jsonObject::json_to_str(){
-        nodeL *aux = this->data;
+    const char* jsonObject::convert(bool valor){
+        static char buffer[50];
+        if(valor)
+            sprintf (buffer,"%s","true");
+        else
+            sprintf (buffer,"%s","false");
+        return buffer;
+    }
+
+    const char* jsonObject::convert(int valor){
+        static char buffer[50];
+        sprintf (buffer, "%d", valor);
+        return buffer;
+    }
+
+    const char* jsonObject::convert(size_t valor){
+        static char buffer[50];
+        sprintf (buffer, "%zu", valor);
+        return buffer;
+    }
+
+    char* jsonObject::json_to_str(){
         static char response[200] = "{\"";
+        if(strcmp(response,"{\"") != 0)
+            memcpy(response,"{\"",3);
+
+        nodeL *aux = this->data;
+        if(aux == nullptr)
+            throw "Parse Error";
+
         const char* aux_str2 = "\":\"";
         const char* aux_str3 = "\"}";
         const char* aux_str4 = "\",\"";
@@ -106,11 +139,15 @@ namespace Insoel {
             }
             aux = aux->sig;
         }
-        return const_cast<const char *>(response);
+        return response;
     }
 
     void jsonObject::print(){
         showListL(this->data);
+    }
+
+    jsonObject::~jsonObject(){
+        freeList(this->data);
     }
 }
 

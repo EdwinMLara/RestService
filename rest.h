@@ -5,6 +5,9 @@
 
 #include <iostream>
 #include "router.h"
+#include "Request.h"
+#include "Response.h"
+#include <jsonobject.h>
 
 namespace Insoel {
     template <typename T>

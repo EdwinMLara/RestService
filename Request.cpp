@@ -8,9 +8,12 @@ data from the string request*/
 
 namespace Insoel {
     Request::Request(){
+        this->body = nullptr;
+        this->method = "unknown";
+        this->path = "unknown";
     }
 
-    Request::Request(string strRequest){
+    Request::Request(const char * strRequest){
         this->method = this->get_str_method(strRequest);
         if(this->method.compare("error") == 0)
             throw "method error";
@@ -18,35 +21,38 @@ namespace Insoel {
         this->path = this->get_str_path(strRequest);
         if(this->path.compare("error") == 0)
             throw "path error";
+
+        this->body = nullptr;
         if(strcmp(this->method.c_str(),"GET") == 0)
             return;
 
         this->strbody = this->get_str_body(strRequest);
         if(this->strbody.compare("error") == 0)
             throw "strbody error";
+
     }
 
     void Request::print_str_request(){
         std::cout << this->strbody << std::endl;
     }
 
-    string Request::get_str_method(string strRequest){
-        if(strstr(strRequest.c_str(),string("GET").c_str())){
+    string Request::get_str_method(const char * strRequest){
+        if(strstr(strRequest,string("GET").c_str())){
             return "GET";
         };
-        if(strstr(strRequest.c_str(),string("POST").c_str())){
+        if(strstr(strRequest,string("POST").c_str())){
             return "POST";
         };
-        if(strstr(strRequest.c_str(),string("PUT").c_str())){
-            return "GET";
+        if(strstr(strRequest,string("PUT").c_str())){
+            return "PUT";
         };
-        if(strstr(strRequest.c_str(),string("DELETE").c_str())){
-            return "GET";
+        if(strstr(strRequest,string("DELETE").c_str())){
+            return "DELETE";
         };
         return "error";
     }
 
-    string Request::get_str_path(string strRequest){
+    string Request::get_str_path(const char * strRequest){
         int i=0,count=0;
         int positions[2] = {0,0};
 
@@ -73,7 +79,7 @@ namespace Insoel {
         }
     }
 
-    string Request::get_str_body(string strRequest){
+    string Request::get_str_body(const char *strRequest){
         int positions[2] = {0,0};
         int i=0;
         while(strRequest[i] != '\0'){
@@ -100,19 +106,17 @@ namespace Insoel {
         return "error";
     }
 
-    void Request::print_values(){
-        nodeL *aux = this->body.data;
-        while (aux != nullptr) {
-            cout << aux->key << " --- " << aux->dato << endl;
-            aux = aux->sig;
-        }
+   /* void Request::print_values(){
+
     }
 
-    string Request::getValByKey(const char* key){
-        char * value  = getValueByKey(key,this->body.data);
-        string val = string(value);
-        free(value);
-        return val;
+    string Request::getValfromResponse(const char* key){
+
+        return nullptr;
+    }*/
+
+    Request::~Request(){
+        delete(this->body);
     }
 
 

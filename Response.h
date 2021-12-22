@@ -2,9 +2,9 @@
 #define RESPONSE_H
 
 #include <iostream>
-#include "responsebody.h"
 #include <float.h>
 #include <string.h>
+#include "jsonobject.h"
 
 using namespace std;
 
@@ -13,11 +13,11 @@ namespace Insoel {
         public:
             string strResponse;
             const char* response_state;
-            ResponseBody *body;
+            jsonObject *body;
             Response();
-            const char* convert(float);
+            ~Response();
             void add_to_response(const char* ,const char*);
-            void create_response(const char* response_status);
+            string create_response();
     };
 }
 #endif // RESPONSE_H
