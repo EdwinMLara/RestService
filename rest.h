@@ -4,12 +4,17 @@
 /**los template no pueden ser separados en .h and cpp*/
 
 #include <iostream>
-#include "router.h"
-#include "Request.h"
-#include "Response.h"
-#include <jsonobject.h>
+#include "./src/router.h"
+#include "./src/Request.h"
+#include "./src/Response.h"
+#include "./src/jsonobject.h"
 
 namespace Insoel {
+    #define HTTP_GET "GET"
+    #define HTTP_POST "POST"
+    #define HTTP_DELETE "DELETE"
+    #define HTTP_UPDATE "UPDATE"
+
     template <typename T>
     class Rest{
         private:
@@ -20,7 +25,7 @@ namespace Insoel {
             Rest();
             Rest(T*);
             bool add_endpoint(string ,string ,void (*f)(Request*,Response*,T*));
-            void run_server(string);
+            string run_server(string);
     };
 
     template <typename T>
@@ -41,8 +46,8 @@ namespace Insoel {
     }
 
     template <typename T>
-    void Rest<T>::run_server(string strRequest){
-        this->ro->exe_router_callback(strRequest,this->m);
+    string Rest<T>::run_server(string strRequest){
+        return this->ro->exe_router_callback(strRequest,this->m);
     }
 } // namespace Insoel
 

@@ -1,6 +1,6 @@
 #include "iostream"
 #include "rest.h"
-#include "jardinsensores.h"
+#include "src/jardinsensores.h"
 #include <chrono>
 
 
@@ -19,11 +19,11 @@ void temperatura(Request * req,Response *res, T* m){
     cout << "Se ejecuto temperatura" << endl;
     cout << m->temperatura << endl;
     float aux = 4;
-    cout << jsonObject::convert(aux) << endl;
+    cout << JsonObject::convert(aux) << endl;
     bool aux2 = 0;
-    cout << jsonObject::convert(aux2) << endl;
+    cout << JsonObject::convert(aux2) << endl;
     size_t aux3 = 5654;
-    cout << jsonObject::convert(aux3) << endl;
+    cout << JsonObject::convert(aux3) << endl;
 }
 
 template<typename T>
@@ -38,8 +38,8 @@ void humedad(Request *req,Response *res, T* m){
 
 template <typename T>
 void home(Request *req  ,Response *res, T *m){
-    res->add_to_response("temperatura",jsonObject::convert(m->temperatura));
-    res->add_to_response("humedad",jsonObject::convert(m->humedad));
+    res->add_to_response("temperatura",JsonObject::convert(m->temperatura));
+    res->add_to_response("humedad",JsonObject::convert(m->humedad));
     cout << "se ejecuto home" << endl;
 }
 
@@ -49,12 +49,12 @@ int main(){
     JardinSensores *js = new JardinSensores();
     auto start = high_resolution_clock::now();
     Rest<JardinSensores> rest(js);
-    rest.add_endpoint("GET","/",home);
-    rest.add_endpoint("POST","/lamp",temperatura);
-    rest.add_endpoint("POST","/tempo",humedad);
-    rest.run_server(EXAMPLE_REQUEST_HOME);
-    rest.run_server(EXAMPLE_REQUEST_LAMP);
-    rest.run_server(EXAMPLE_REQUEST_TEMPO);
+    rest.add_endpoint(HTTP_GET,"/",home);
+    rest.add_endpoint(HTTP_POST,"/lamp",temperatura);
+    rest.add_endpoint(HTTP_POST,"/tempo",humedad);
+    cout << rest.run_server(EXAMPLE_REQUEST_HOME) << endl;
+    cout << rest.run_server(EXAMPLE_REQUEST_LAMP) << endl;
+    cout << rest.run_server(EXAMPLE_REQUEST_TEMPO) << endl;
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
