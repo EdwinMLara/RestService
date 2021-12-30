@@ -1,0 +1,40 @@
+#############################
+# clases
+#############################
+Rest    KEYWORD1
+Router    KEYWORD1
+Request    KEYWORD1
+Response    KEYWORD1
+JsonObject KEYWORD1
+
+
+#############################
+# Metodos
+#############################
+
+add_endpoint    KEYWORD2
+run_server    KEYWORD2
+add_path    KEYWORD2
+exe_router_callback    KEYWORD2
+print_str_request    KEYWORD2
+get_str_method    KEYWORD2
+get_str_method    KEYWORD2
+get_str_body    KEYWORD2
+add_to_response KEYWORD2
+create_response     KEYWORD2
+get_length    KEYWORD2
+key_exist    KEYWORD2
+get_ValueByKey    KEYWORD2
+add_to_json    KEYWORD2
+convert    KEYWORD2
+json_to_str    KEYWORD2
+
+
+#############################
+# Constantes
+#############################
+
+HTTP_GET    LITERAL1
+HTTP_POST    LITERAL1
+HTTP_DELETE    LITERAL1
+HTTP_UPDATE    LITERAL1
